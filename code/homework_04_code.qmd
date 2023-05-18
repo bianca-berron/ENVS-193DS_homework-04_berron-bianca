@@ -53,13 +53,59 @@ ggplot(data = fish_data_filtered, aes(x = length, y = weight)) +
 ```
 
 
-3)
-```{r}
-modelobject <- lm(length ~ weight, data = fish_data_filtered) 
-par(mfrow = c(2, 2))
+3 and 4)
+```{r create-model-object}
+modelobject <- lm(weight ~ length, data = fish_data_filtered) 
 
+par(mfrow = c(2, 2))
 plot(modelobject)
 
 ```
 
+5)
+Check assumptions:
+
+1. linear relationship between variables: yes! (used exploratory data visualization to check that)
+2. independence of errors: yes! (making that assumption based on how the data were collected)
+3. homoskedasticity of errors: yes! (making that decision from residuals vs fitted plot/scale-location plots)
+4. normally distributed errors: yes! (looking at QQ plot of residuals)
+
+
+
+Residual vs fitted plot: plots the residuals (difference between obsered and expected values) versus the fitted line. Based on the how the residuals seem to be somewhat evenly and randomly distributed around the horizontal dotted line, one can confirm homosecdasticity . 
+
+Normal Q-Q plot: looking at the qqplot, the residuals look normally distributed, as they a follow linear path. 
+
+Scale-Location plot: plots fitted values versus the square root of the standardized residuals; plots seem to be somewhat evenly and randomly distributed around horizontal red line, implying homoscedasticity. 
+
+Residuals vs leverage plot: there doesn't appear to be any residual outliers that are affecting the model predictions. 
+
+6)
+
+
+```{r summary-tables}
+model_summary <- summary(modelobject)
+
+model_summary
+```
+
+```{r anova}
+model_squares <- anova(modelobject)
+model_squares
+```
+
+```{r anova-table}
+model_squares_table <- tidy(model_squares) %>% 
+  mutate(p.value = case_when(
+    p.value < 0.001 ~ "< 0.001"
+  )) %>% 
+  mutate(term = case_when(
+    term == "length" ~ "Trout Perch Fish Length (mm)", TRUE ~ term
+  )) %>% 
+  flextable() %>% 
+  set_header_labels(df = "Degrees of Freedom", sumsq = "Sum of squares", meansq = "Mean squares", statistic = "F-statistic", p.value = "p-value")
+
+
+model_squares_table
+```
 
