@@ -109,4 +109,4 @@ model_squares_table
 ```
 
 8) 
-The ANOVA table directly relates to the information recevied from the summary() object. Both have a calculated F-statistic of about 1281 on 1 and 288 degrees of freedom, a p-value < 0.001, and the summary () object has an R^2 value of 0.8164. 
+The ANOVA table directly relates to the information recieved from the summary() object. Both have a calculated F-statistic of about 1281 on 1 and 288 degrees of freedom, a p-value < 0.001, and the summary () object has an R^2 value of 0.8164. 
