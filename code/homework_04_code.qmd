@@ -1,0 +1,46 @@
+---
+title: "homework-04-code"
+format: docx
+editor: visual
+---
+
+## Quarto
+
+```{r Set-up}
+library(tidyverse)
+library(here)
+library(performance)
+library(broom)
+library(flextable)
+library(ggeffects)
+library(car)
+library(naniar)
+library(lterdatasampler)
+```
+
+# Problem 1. "How does fish length predict fish weight for trout perch (across all sample years)?"
+
+1) 
+Biological:
+Null Hypothesis: Fish length does not predict fish weight for trout perch.
+
+Alternative Hypothesis: Fish length does predict fish weight for trout perch. 
+
+Mathematical:
+Null hypothesis: β_1 = 0
+
+Alternative hypothesis: β_1 ≠ 0
+
+2) 
+
+```{r}
+fish_data <- read_csv(here("data", "ntl6_v12.csv"))
+```
+
+```{r}
+fish_data_filtered <- fish_data %>% 
+  filter(spname == "TROUTPERCH")
+```
+
+
+
