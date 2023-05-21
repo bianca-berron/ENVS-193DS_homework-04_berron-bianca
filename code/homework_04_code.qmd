@@ -2,6 +2,9 @@
 title: "homework-04-code"
 format: docx
 editor: visual
+execute: 
+  warning: false
+  message: false
 ---
 
 ## Quarto
@@ -93,7 +96,7 @@ model_squares <- anova(modelobject)
 model_squares
 ```
 
-```{r anova-table}
+```{r}
 model_squares_table <- tidy(model_squares) %>% 
   mutate(p.value = case_when(
     p.value < 0.001 ~ "< 0.001"
@@ -109,4 +112,26 @@ model_squares_table
 ```
 
 8) 
-The ANOVA table directly relates to the information recieved from the summary() object. Both have a calculated F-statistic of about 1281 on 1 and 288 degrees of freedom, a p-value < 0.001, and the summary () object has an R^2 value of 0.8164. 
+The ANOVA table directly relates to the information received from the summary() object. Both have a calculated F-statistic of about 1281 on 1 and 288 degrees of freedom, a p-value < 0.001, and the summary () object has an R^2 value of 0.8164. 
+
+9)
+We tested the hypothesis of whether or not fish length predicts fish weight for trout perch. The null hypothesis was that fish length does not predict fish weight for trout perch. Based on the samples and data, we found that fish length does predict fish weight for trout perch (F_1,288 = 1280.8, p < 0.001, R^2 = 0.82). 
+10)
+```{r predictions}
+predictions <- ggpredict(modelobject, terms = "length")
+
+predictions
+```
+
+```{r predictions-plot}
+plot_predictions <- ggplot(data = fish_data_filtered, aes(x = length, y = weight)) +
+  geom_point() +
+  geom_line(data = predictions, aes(x = x, y = predicted), color = "red", linewidth = 1) +
+  geom_ribbon(data = predictions, aes(x = x, y = predicted, ymin = conf.low, ymax = conf.high), alpha = 0.2) +
+  theme_bw() +
+  labs (x = "Fish Length (mm)", y = "Fish Weight (g)", 
+        caption = "Fish length predicts fish weight through a linear relationship. Based on our observations, for every 1.0 mm increase in fish length, we expect a 0.2 g increase in fish weight.")
+
+plot_predictions
+```
+
