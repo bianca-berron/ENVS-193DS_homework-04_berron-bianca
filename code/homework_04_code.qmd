@@ -10,6 +10,7 @@ execute:
 ## Quarto
 
 ```{r Set-up}
+# load in packages
 library(tidyverse)
 library(here)
 library(performance)
@@ -37,29 +38,30 @@ Alternative hypothesis: β_1 ≠ 0
 2) 
 
 ```{r read-data}
+# load in data and save as "fish_data" object
 fish_data <- read_csv(here("data", "ntl6_v12.csv"))
 ```
 
 ```{r filter-data}
+# filter the data to only include trout perch species
 fish_data_filtered <- fish_data %>% 
   filter(spname == "TROUTPERCH")
 ```
 
 ```{r missing-data-vis}
+# create a missing data visualization using gg_miss_var
 gg_miss_var(fish_data_filtered) +
+  # add a meanignful caption 
   labs (caption = str_wrap("There are 0 missing data on fish length, however there are 200 missing data on fish weight which does affect our hypothesis in how fish length predicts fish weight."))
-```
-
-```{r}
-ggplot(data = fish_data_filtered, aes(x = length, y = weight)) + 
-  geom_point()
 ```
 
 
 3 and 4)
 ```{r create-model-object}
+# create modelobject to determine if there is a relationship between fish length and weight
 modelobject <- lm(weight ~ length, data = fish_data_filtered) 
 
+# makes the viewer pane show a 2x2 grid of plots
 par(mfrow = c(2, 2))
 plot(modelobject)
 
@@ -85,6 +87,7 @@ Residuals vs leverage plot: there doesn't appear to be any residual outliers tha
 
 6)
 ```{r summary-tables}
+# store model summary as an object
 model_summary <- summary(modelobject)
 
 model_summary
@@ -92,19 +95,25 @@ model_summary
 
 7)
 ```{r anova}
+# store the ANOVA table as an object and use anova () function to retrieve variance table analysis for model
 model_squares <- anova(modelobject)
+
 model_squares
 ```
 
 ```{r}
 model_squares_table <- tidy(model_squares) %>% 
+  # replace the extremely small p values with < 0.001
   mutate(p.value = case_when(
     p.value < 0.001 ~ "< 0.001"
   )) %>% 
+  # rename the "length" cell to be meaningful as "Trout Perch Fish Length (mm)" 
   mutate(term = case_when(
     term == "length" ~ "Trout Perch Fish Length (mm)", TRUE ~ term
   )) %>% 
+  # make data frame a flextable object
   flextable() %>% 
+  # change the header labels to be meaningful 
   set_header_labels(df = "Degrees of Freedom", sumsq = "Sum of squares", meansq = "Mean squares", statistic = "F-statistic", p.value = "p-value")
 
 
@@ -116,8 +125,10 @@ The ANOVA table directly relates to the information received from the summary() 
 
 9)
 We tested the hypothesis of whether or not fish length predicts fish weight for trout perch. The null hypothesis was that fish length does not predict fish weight for trout perch. Based on the samples and data, we found that fish length does predict fish weight for trout perch (F_1,288 = 1280.8, p < 0.001, R^2 = 0.82). 
+
 10)
 ```{r predictions}
+# conduct model predictions using ggpredict
 predictions <- ggpredict(modelobject, terms = "length")
 
 predictions
@@ -125,9 +136,13 @@ predictions
 
 ```{r predictions-plot}
 plot_predictions <- ggplot(data = fish_data_filtered, aes(x = length, y = weight)) +
+  # plot the underlying data from fish_data_filtered
   geom_point() +
+  # plot the predictions
   geom_line(data = predictions, aes(x = x, y = predicted), color = "red", linewidth = 1) +
+  # plot 95% confidence interval using ggpredict
   geom_ribbon(data = predictions, aes(x = x, y = predicted, ymin = conf.low, ymax = conf.high), alpha = 0.2) +
+  # add a theme, meaningful labels, and a caption
   theme_bw() +
   labs (x = "Fish Length (mm)", y = "Fish Weight (g)", 
         caption = "Fish length predicts fish weight through a linear relationship. Based on our observations, for every 1.0 mm increase in fish length, we expect a 0.2 g increase in fish weight.")
