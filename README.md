@@ -1,1 +1,3 @@
 # ENVS-193DS_homework-04_berron-bianca
+
+This is the GitHub repo for Homework #4 for ENVS 193DS. Within this repo are data from the North Temperate Lakes LTER on fish lengths (mm) and weights (g) that was downloaded in CSV format via the EDI data portal. Using the EDI portal link, one can find the methodological and data-specific information about the study [here] (https://portal.edirepository.org/nis/metadataviewer?packageid=knb-lter-ntl.6.34). The repo of this assignment can be found [here] (https://github.com/bianca-berron/ENVS-193DS_homework-04_berron-bianca). 
