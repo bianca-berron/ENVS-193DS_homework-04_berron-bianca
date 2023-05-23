@@ -77,13 +77,13 @@ Check assumptions:
 
 
 
-Residual vs fitted plot: plots the residuals (difference between obsered and expected values) versus the fitted line. Based on the how the residuals seem to be somewhat evenly and randomly distributed around the horizontal dotted line, one can confirm homosecdasticity . 
+Residual vs fitted plot: plots the residuals (difference between observed and expected values) versus the fitted line. Based on the how the residuals seem to be somewhat evenly and randomly distributed around the horizontal dotted line, one can confirm homoscedasticity. In addition, the red line is relatively flat. 
 
-Normal Q-Q plot: looking at the qqplot, the residuals look normally distributed, as they a follow linear path. 
+Normal Q-Q plot: looking at the qqplot, the residuals look normally distributed, as the residuals follow linear path. 
 
-Scale-Location plot: plots fitted values versus the square root of the standardized residuals; plots seem to be somewhat evenly and randomly distributed around horizontal red line, implying homoscedasticity. 
+Scale-Location plot: plots fitted values versus the square root of the standardized residuals; plots seem to be somewhat evenly and randomly distributed around horizontal (and relatively flat) red line, implying homoscedasticity. 
 
-Residuals vs leverage plot: there doesn't appear to be any residual outliers that are affecting the model predictions. 
+Residuals vs leverage plot: there doesn't appear to be any significant residual outliers that are affecting the model predictions. 
 
 6)
 ```{r summary-tables}
