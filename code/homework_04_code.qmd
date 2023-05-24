@@ -9,6 +9,8 @@ execute:
 
 ## Quarto
 
+Link to repo can be found [here](https://github.com/bianca-berron/ENVS-193DS_homework-04_berron-bianca). 
+
 ```{r Set-up}
 # load in packages
 library(tidyverse)
@@ -20,6 +22,7 @@ library(ggeffects)
 library(car)
 library(naniar)
 library(lterdatasampler)
+library(ggplot2)
 ```
 
 # Problem 1. "How does fish length _predict_ fish weight for trout perch (across all sample years)?"
@@ -52,7 +55,10 @@ fish_data_filtered <- fish_data %>%
 # create a missing data visualization using gg_miss_var
 gg_miss_var(fish_data_filtered) +
   # add a meanignful caption 
-  labs (caption = str_wrap("There are 0 missing data on fish length, however there are 200 missing data on fish weight which does affect our hypothesis in how fish length predicts fish weight."))
+  labs (caption = str_wrap("**Missing Data Visualization.**There are 0 missing data on fish length, however there are 200 missing data on fish weight which does affect our hypothesis in how fish length predicts fish weight.")) +
+  theme(
+    plot.caption = element_text(hjust = 0)
+  )
 ```
 
 
@@ -70,16 +76,9 @@ plot(modelobject)
 5)
 Check assumptions:
 
-1. linear relationship between variables: yes! (used exploratory data visualization to check that)
-2. independence of errors: yes! (making that assumption based on how the data were collected)
-3. homoskedasticity of errors: yes! (making that decision from residuals vs fitted plot/scale-location plots)
-4. normally distributed errors: yes! (looking at QQ plot of residuals)
-
-
-
 Residual vs fitted plot: plots the residuals (difference between observed and expected values) versus the fitted line. Based on the how the residuals seem to be somewhat evenly and randomly distributed around the horizontal dotted line, one can confirm homoscedasticity. In addition, the red line is relatively flat. 
 
-Normal Q-Q plot: looking at the qqplot, the residuals look normally distributed, as the residuals follow linear path. 
+Normal Q-Q plot: looking at the qqplot, the residuals look normally distributed, as the residuals follow a linear path. 
 
 Scale-Location plot: plots fitted values versus the square root of the standardized residuals; plots seem to be somewhat evenly and randomly distributed around horizontal (and relatively flat) red line, implying homoscedasticity. 
 
@@ -124,7 +123,7 @@ model_squares_table
 The ANOVA table directly relates to the information received from the summary() object. Both have a calculated F-statistic of about 1281 on 1 and 288 degrees of freedom, a p-value < 0.001, and the summary () object has an R^2 value of 0.8164. 
 
 9)
-We tested the hypothesis of whether or not fish length predicts fish weight for trout perch. The null hypothesis was that fish length does not predict fish weight for trout perch. Based on the samples and data, we found that fish length does predict fish weight for trout perch (F_1,288 = 1280.8, p < 0.001, R^2 = 0.82). 
+We tested the hypothesis of whether or not fish length predicts fish weight for trout perch in which the null hypothesis was that fish length does not predict fish weight for trout perch. Based on the samples and data, we found that fish length does predict fish weight for trout perch based on our sample size of 489 and a significance level of 0.05 (F_1,288 = 1280.8, p < 0.001, R^2 = 0.82). Based on our observations, for every 1.0 mm increase in fish length, we expect a 0.2 g increase in fish weight.  
 
 10)
 ```{r predictions}
@@ -139,13 +138,21 @@ plot_predictions <- ggplot(data = fish_data_filtered, aes(x = length, y = weight
   # plot the underlying data from fish_data_filtered
   geom_point() +
   # plot the predictions
-  geom_line(data = predictions, aes(x = x, y = predicted), color = "red", linewidth = 1) +
+  geom_line(data = predictions, aes(x = x, y = predicted), color = "hotpink", linewidth = 1) +
   # plot 95% confidence interval using ggpredict
   geom_ribbon(data = predictions, aes(x = x, y = predicted, ymin = conf.low, ymax = conf.high), alpha = 0.2) +
   # add a theme, meaningful labels, and a caption
   theme_bw() +
   labs (x = "Fish Length (mm)", y = "Fish Weight (g)", 
-        caption = "Fish length predicts fish weight through a linear relationship. Based on our observations, for every 1.0 mm increase in fish length, we expect a 0.2 g increase in fish weight.")
+        caption = str_wrap("**Figure 1.** Based on our observations, for every 1.0 mm increase in fish length, we expect a 0.2 g increase in fish weight. Pink line represents predicted fish weight based on fish length while black points represent the observed fish weights. The shaded gray area around red line represents the confidence level of the predicted values.")) +
+  theme(
+        # change axis titles font and boldness
+        axis.title = (element_text(color = "black", family = "Times New Roman", face = "bold")),
+        axis.text = element_text(family = "Times New Roman", color = "black"),
+        plot.caption = element_text(family = "Times New Roman", hjust = 0)
+        
+        
+        )
 
 plot_predictions
 ```
