@@ -82,7 +82,7 @@ Normal Q-Q plot: looking at the qqplot, the residuals look normally distributed,
 
 Scale-Location plot: plots fitted values versus the square root of the standardized residuals; plots seem to be somewhat evenly and randomly distributed around horizontal (and relatively flat) red line, implying homoscedasticity. 
 
-Residuals vs leverage plot: there doesn't appear to be any significant residual outliers that are affecting the model predictions. 
+Residuals vs leverage plot: there doesn't appear to be many significant residual outliers that are affecting the model predictions, however there is one point (226) that lies outside of Cook's Distance which may affect the model predictions. 
 
 6)
 ```{r summary-tables}
