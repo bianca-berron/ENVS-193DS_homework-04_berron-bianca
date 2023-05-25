@@ -54,7 +54,7 @@ fish_data_filtered <- fish_data %>%
 ```{r missing-data-vis}
 # create a missing data visualization using gg_miss_var
 gg_miss_var(fish_data_filtered) +
-  # add a meanignful caption 
+  # add a meaningful caption 
   labs (caption = str_wrap("**Missing Data Visualization.**There are 0 missing data on fish length, however there are 200 missing data on fish weight which does affect our hypothesis in how fish length predicts fish weight.")) +
   theme(
     plot.caption = element_text(hjust = 0)
@@ -149,10 +149,8 @@ plot_predictions <- ggplot(data = fish_data_filtered, aes(x = length, y = weight
         # change axis titles font and boldness
         axis.title = (element_text(color = "black", family = "Times New Roman", face = "bold")),
         axis.text = element_text(family = "Times New Roman", color = "black"),
-        plot.caption = element_text(family = "Times New Roman", hjust = 0)
-        
-        
-        )
+        # adjust caption
+        plot.caption = element_text(family = "Times New Roman", hjust = 0))
 
 plot_predictions
 ```
